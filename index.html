@@ -3,15 +3,68 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>repl.it</title>
+    <title>inSUREance: Find Doctors and Practices that work for your coverage.</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
+      <main>
+          <header>
+            <h1>inSUREance</h1>
+            <p>A quick way to find a provider near you. Input your location and search radius to quickly find a practice or doctor near you. A list of insurances taken by those practices will be generated, as well as operating hours, location, phone number .</p>
+            <p>Example:</p>
+                <div class="example">
+                    <p>Dr. Who - Whoville Practice - Specialty Dentist</p>
+                    <p>Insurances Accepted:</p>
+                        <ul>
+                            <li>Insurance 1</li>
+                            <li>Insurance 2</li>
+                            <li>Insurance 3</li>
+                        </ul>
+                    <p>Operating Hours: 8:00am-5:00pm Mon-Friday</p>
+                    <p>Phone: ###-####-####</p>
+                    <p>Location: Some Location with Link</p>
+                    <p>Doctors in Practice:</p>
+                        <ul>
+                            <li>Dr. 1</li>
+                            <li>Dr. 2</li>
+                            <li>Dr. 3</li>
+                        </ul>
+                </div>
+            <form action="submit" class="submit">
+                <fieldset>
+                    <legend>Location:
+                        <input type="text" class="user_location" value="" placeholder="Please enter your address location" required>
+                    </legend>
+                    <legend>Search Radius(mi):
+                        <input type="text" class="radius" value="5" required>
+                    </legend>
+                    <legend>Specialty:
+                        <div class="addSpecialty">
+                        <input type="text" class="specialty_uid" value="" placeholder="Please enter a specialty to search">
+                        <button>Add Specialty</button>
+                        </div>
+                    </legend>
+                    <legend>Doctor:
+                        <input type="text" class="doctor" value="" placeholder="Please enter a doctor name if you know who you want to see">
+                    </legend>
+                    <legend>Practice:
+                        <input type="text" class="practice" value="" placeholder="Please enter a practice name if you know which one you want to go to">
+                    </legend>
+                    <button class="search-submit">Search</button>
+                </fieldset>
+            </form>
+            </header>
+        <section class="results">
+            <ul class="listResults">
+                <!-- results here -->
+            </ul>
+        </section>  
+      </main>
     <script
     src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
     crossorigin="anonymous"></script>
-    <script src="script.js"></script>
+    <script src="code.js"></script>
     
   </body>
 </html>
