@@ -1,0 +1,68 @@
+*{
+    box-sizing: border-box;
+}
+
+main{
+    text-align: center;
+}
+
+.fieldset{
+    border: 0;
+    padding: 0;
+    margin: 5px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.submit{
+    border: 2px solid black;
+    border-radius: 3px;
+}
+legend{
+    display: block;
+    padding: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.user_location,.specialty_uid,.doctor,.practice{
+    width: 70%;
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+.radius{
+    width: 10%;
+    padding: 5px;
+}
+.search-submit{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* edit returned data *//* modify the list items*/
+section>.results{
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+ul{
+    padding: 0px;
+}
+.return_data{
+    /* line-height: 20px; */
+    list-style-type: none;
+    display: block;
+    height: 400;
+    border: 2px solid black;
+    margin: 15px 10px 15px 10px; 
+}
+div>.insurance{
+    display: block;
+    height: 150px;
+    overflow: scroll;
+    background-color: whitesmoke;
+    padding: 5px; 
+}

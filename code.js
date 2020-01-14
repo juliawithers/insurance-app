@@ -29,56 +29,54 @@ function getHealthData(userLocation, radius, specialty, doctor, practice){
   console.log(practice)
 // scenario for just required input - practices endpoint
   if (specialty === "" & doctor === "" & practice === ""){
-    let source = srcPractices+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
-    // console.log(source,userLocation,radius)
-
-    usePractices(source, userLocation,radius)
+    let source = srcDoctors+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
+    useDoctors(source, userLocation,radius)
   }
 // scenario for required + specialty - doctor endpoint
   else if (doctor === "" & practice === ""){
-    let source = srcPractices+'specialty_uid='+specialty+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
+    let source = srcDoctors+'specialty_uid='+specialty+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
     console.log(source)
 
     useDoctors(source,userLocation,radius)
   }
 // scenario for required + doctor - doctor endpoint
   else if (specialty === "" & practice === ""){
-    let source = srcPractices+'&name='+doctor+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
+    let source = srcDoctors+'&name='+doctor+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
     console.log(source)
 
     useDoctors(source,userLocation,radius)
   }
 // scenario for required + practice - practices endpoint
   else if (specialty === "" & doctor === ""){
- let source = srcPractices+'&practice_uid='+practice+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
+ let source = srcDoctors+'&name='+practice+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
     console.log(source)
 
     useDoctors(source,userLocation,radius)
   }
 // scenario for required + specialty + doctor - doctor endpoint
   else if (practice === ""){
-    let source = srcPractices+'&specialty_uid='+specialty+'&name='+doctor+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
+    let source = srcDoctors+'&specialty_uid='+specialty+'&name='+doctor+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
     console.log(source)
 
     useDoctors(source,userLocation,radius)
   }
 // scenario for required + specialty + practice - doctor endpoint
   else if (doctor === ""){
-    let source = srcPractices+'&practice_uid='+practice+'&specialty_uid='+specialty+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
+    let source = srcDoctors+'&practice_uid='+practice+'&specialty_uid='+specialty+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
     console.log(source)
 
     useDoctors(source,userLocation,radius)
   }
 // scenario for required + doctor + practice - doctor endpoint
   else if (specialty === ""){
-    let source = srcPractices+'&name='+doctor+'&practice_uid='+practice+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
+    let source = srcDoctors+'&name='+doctor+'&practice_uid='+practice+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
     console.log(source)
 
     useDoctors(source,userLocation,radius)
   }
 // scenario for required + specialty + doctor + practice - doctor endpoint
   else {
-    let source = srcPractices+'&name='+doctor+'&practice_uid='+practice+'&specialty_uid='+specialty+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
+    let source = srcDoctors+'&name='+doctor+'&practice_uid='+practice+'&specialty_uid='+specialty+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
     console.log(source)
 
     useDoctors(source,userLocation,radius)
@@ -98,28 +96,8 @@ function useDoctors(source,userLocation,radius){
    })
 }
 
-function usePractices(source,userLocation,radius){
- // search Practices
-  let address = parseLocation(userLocation)
-  console.log(address)
-
-  getGeo(address,source,radius)
-  .then(src=>{
-    console.log(src)
-    responseJson = fetchHealthDataPractice(src)
-   })
-}
-
 // **********Must fetch the health data based of endpoint:********** 
-function fetchHealthDataPractice(source){
-  fetch(source)
-  .then(response =>{
-    if(response.ok){
-      return response.json()
-    }
-  })
-  .then(responseJson => manipulatePracticeData(responseJson))
-}
+
 
 function fetchHealthDataDoctor(source){
   fetch(source)
@@ -129,136 +107,129 @@ function fetchHealthDataDoctor(source){
     }
   })
   .then(responseJson => manipulateDoctorData(responseJson))
+  .catch(error=>console.log(error))
 }
 
-// **********Two scenarios - data passed through doctor search and data passed through practice search**********
+// **********Manipulate the Response**********
+// NEXT STEPS: Must have a contingency for the data below to have empty fields
 function manipulateDoctorData(responseJson){
   console.log(responseJson)
   // Need to add the URL links to pages
-  for(let i=0;i<=responseJson.data.length;i++){
-    // Name of Doctor
-    let first_name = responseJson.data[i].profile.first_name;
-    let last_name = responseJson.data[i].profile.last_name;
-    // Specialty of Doctor
-    let special = responseJson.data[i].specialties.name
-    // Practice Name
-    let practice_name = responseJson.data[i].practices[0].name;
-    // Distance from userLocation
-    let distance = responseJson.data[i].practices[0].distance;
-    // Hours of operation
-    let hours = responseJson.data[i].practices[0].office_hours;
-    // Phone Number
-    let phone = responseJson.data[i].practices[0].phones[0] //might have to iterate to find landline
-    // Location Address
-    let city = responseJson.data[i].practices[0].visit_address.city;
-    let state = responseJson.data[i].practices[0].visit_address.state;
-    let street = responseJson.data[i].practices[0].visit_address.street;
-    let street2 = responseJson.data[i].practices[0].visit_address.street2;
-    let zip = responseJson.data[i].practices[0].visit_address.zip;
-      
-    let insuranceArr = [];
-    for (let j=0;j<=responseJson.data[i].insurances.length;j++){
-      // Insurances taken ***Highest 
-      let planName = responseJson.data[i].insurances[j].insurance_plan.name; 
-      let provider = responseJson.data[i].insurances[j].insurance_provider.name; 
-      insuranceArr.push(planName+'-'+provider);
-      }
-    renderListItemDoctor(first_name,last_name,special,practice_name,distance,hours,phone,city,state,street,street2,zip,insuranceArr)
+  if (responseJson.data.length === 0){
+    // <p class="hidden" id="error_message"></p>
+    $('#error_message').html(`Sorry, I could not find data for this search. Please try altering the inputs.`)
   }
 
-  // test logs:
-  console.log(insuranceArr)
-  console.log(city)
-  console.log(special)
-}
+  for(let i=0;i<responseJson.data.length;i++){
 
-function manipulatePracticeData(responseJson){
-  console.log(responseJson)
-  // Practice search: need to find the following data-
- 
-  for(let i=0;i<=responseJson.data.length;i++){
-  
-    // Practice Name
-    let practice_name = responseJson.data[i].name;
-    // Distance from userLocation
-    let distance = responseJson.data[i].distance;
-    // Hours of operation
-    let hours = responseJson.data[i].office_hours;
-    // Phone Number
-    let phone = responseJson.data[i].phones[0] //might have to iterate to find landline
-    // Location Address
-    let city = responseJson.data[i].visit_address.city;
-    let state = responseJson.data[i].visit_address.state;
-    let street = responseJson.data[i].visit_address.street;
-    let street2 = responseJson.data[i].visit_address.street2;
-    let zip = responseJson.data[i].visit_address.zip;
+    
+    let objArr=[];
+    console.log(responseJson.data[i].practices.length)
+    for(let j=0;j<responseJson.data[i].practices.length;j++){
+        console.log(j)
+      if(responseJson.data[i].practices[j].within_search_area === true){
+        // Practice Name
+        let practice_name = responseJson.data[i].practices[j].name;
+        // Distance from userLocation
+        let dist = responseJson.data[i].practices[j].distance;
+        // let distNum = parseInt(dist,10);
+        let dist_ance = dist.toFixed(2);
+        // Phone Number
+        let ph = responseJson.data[i].practices[j].phones[0].number 
+        let area = ph.slice(0,3)
+        let three_dig = ph.slice(3,6)
+        let four_dig = ph.slice(6,10)
+        let ph_num = [area,three_dig,four_dig].join('-')
+        // Location Address
+        let ci_ty = responseJson.data[i].practices[j].visit_address.city;
+        let st_ate = responseJson.data[i].practices[j].visit_address.state;
+        let s_treet = responseJson.data[i].practices[j].visit_address.street;
+        let s_treet2 = responseJson.data[i].practices[j].visit_address.street2;
+        let z_ip = responseJson.data[i].practices[j].visit_address.zip;
+        objArr.push({
+          practice: practice_name,
+          distance: dist_ance,
+          phone: ph_num,
+          city: ci_ty,
+          state: st_ate,
+          street: s_treet,
+          street2: s_treet2,
+          zip: z_ip
+        })
+        }
       
-    let info = "" 
-    for (let j=0;j<=responseJson.data[i].doctors.length;j++){
-        // Name of Doctor
-        let first_name = responseJson.data[i].doctors[j].profile.first_name;
-        let last_name = responseJson.data[i].doctors[j].profile.last_name;
+        // Name of Doctor 
+        let first_name = responseJson.data[i].profile.first_name;
+        let last_name = responseJson.data[i].profile.last_name;
         // Specialty of Doctor
-        let special = responseJson.data[i].doctors[j].specialties.name
+        let special = responseJson.data[i].specialties[0].name
         
-      let insuranceArr = [];
-      for(let k=0;k<=responseJson.data[i].doctors[j].insurances.length;k++){
-        // Insurances taken ***Highest 
-        let planName = responseJson.data[i].doctors[j].insurances[k].insurance_plan.name; 
-        let provider = responseJson.data[i].doctors[j].insurances[k].insurance_provider.name; 
+        let insuranceArr = [];
+        for (let j=0;j<responseJson.data[i].insurances.length;j++){
+          // Insurances taken ***Highest 
         
-        insuranceArr.push(planName+'-'+provider+' ');
-      }
-    info = first_name+' '+last_name+'-'+special+':'+insuranceArr
-    }
-    renderListItemPractice(practice_name,distance,hours,phone,city,state,street,street2,zip,info)
-  }
+          if(responseJson.data[i].insurances[j] !== undefined && responseJson.data[i].insurances[j] !== undefined){
 
- 
-  // test logs:
-  console.log(practice_name)
-  console.log(insuranceArr)
-  console.log(infoArr)
-  console.log(distance)
+            let planName = responseJson.data[i].insurances[j].insurance_plan.name;
+            let provider = responseJson.data[i].insurances[j].insurance_provider.name;
+            
+            insuranceArr.push(planName+'-'+ provider);
+          }
+          else if(responseJson.data[i].insurances[j] === undefined && responseJson.data[i].insurances[j] !== undefined){
+            let planName = "Not Available :(";
+            let provider = responseJson.data[i].insurances[j].insurance_provider.name;
+            
+            insuranceArr.push(planName+'-'+ provider);
+          } 
+          else if(responseJson.data[i].insurances[j] !== undefined && responseJson.data[i].insurances[j] === undefined){
+            let planName = responseJson.data[i].insurances[j].insurance_plan.name;
+            let provider = "Not Available :(";
+
+            insuranceArr.push(planName+'-'+ provider);
+            
+          } 
+          else{
+            insuranceArr.push('Unfortunately, no Insurance is listed for this provider')
+            // renderListItemDoctor("","","","","")
+          }
+      }
+      } 
+    // test logs:
+    let insurance = insuranceArr.join(' &<br>')
+    console.log(insurance)
+    console.log(objArr)
+    console.log(first_name)
+    console.log(last_name)
+    renderListItemDoctor(first_name,last_name,special,objArr,insurance)
+  }
 }
 
-// **********Must render the health data based of endpoint:**********
-function renderListItemDoctor(){
+// **********Must render the health data based off search params:**********
+function renderListItemDoctor(first_name,last_name,special,objArr,insurance){
   // will render the lists onto ul class="listResults"
   // first_name,last_name,special,practice_name,distance,hours,phone,city,state,street,street2,zip,insuranceArr
-  $('.listResults').append(
-    `<li>
-      <span>${distance}</span>
-      <div>
-        <h3>${first_name} ${last_name}</h3>
-        <p>${special}</p>
-        <p>${practice_name}</p>
-        <p><em>${insuranceArr}</em></p>
-        <p>${hours} / ${phone}</p>
-        <p>${street}${street2},${city},${state}${zip}</p>
-        <p></p>
-      </div>
-    </li>`
-  )
+  
+  for (let i=0;i<objArr.length;i++){
+    $('.listResults').append(
+      `<li class="return_data">
+        
+        <div>
+          <h3>${first_name} ${last_name}</h3>
+          <p class="distance">${objArr[i].distance} Miles Away</p>
+          <p>Specialty: ${special}</p>
+          <p>Practice: ${objArr[i].practice}</p>
+          <div class="insurance">${insurance}</div>
+          <p>Phone: ${objArr[i].phone}</p>
+          <p>${objArr[i].street} ${objArr[i].street2}, 
+          ${objArr[i].city},<br>${objArr[i].state} ${objArr[i].zip}</p>
+          <p></p>
+        </div>
+      </li>`
+    )
+    
+  }
 }
 
-function renderListItemPractice(){
-  // will render the lists onto ul class="listResults"
-  // practice_name,distance,hours,phone,city,state,street,street2,zip,info
-  $('.listResults').append(
-    `<li>
-      <span>${distance}</span>
-      <div>
-        <h3>${practice_name}</h3>
-        <p>${special}</p>
-        <p><em>${infoArr}</em></p>
-        <p>${hours} / ${phone}</p>
-        <p>${street}${street2},${city},${state}${zip}</p>
-        <p></p>
-      </div>
-    </li>`
-  )
-}
 
 // create proper address format for geolocation conversion
 function parseLocation(userLocation){
@@ -282,14 +253,6 @@ async function getGeo(address,source,radius){
   let url = source+'&location='+userLatLong+','+radius+'&user_location='+userLatLong;
   console.log(url)
   return url
-  // fetch(src)
-  // .then(response =>{
-  //   if(response.ok){
-  //     return response.json()
-  //   }
-  // })
-  // .then(responseJson => manipulateGeo(responseJson))
-  // .catch(error => console.log(error.message))
 }
 
 
@@ -309,9 +272,12 @@ function watchForm(){
   // watch for search button submit
   $('.submit').submit(e=>{
     e.preventDefault();
+    $('.listResults').empty()
+    $('#error_message').empty()
     let userLocation = $('.user_location').val();
     let radius = $('.radius').val();
     let specialty = $('.specialty_uid').val();
+    // Note that specialty takes input like dentist, pediatrist, pediatrics, endocrinologist. not dentistry, pediatry, pediatrics. Should eventually provide a drop down list of common practice specialties.
     let doctor = $('.doctor').val();
     let practice = $('.practice').val();
     getHealthData(userLocation,radius,specialty,doctor,practice)
@@ -344,5 +310,3 @@ function watchForm(){
 // }
 // $(watchPredictive)
 $(watchForm)
-// $(getHealthData)
-// $(getGeo)
