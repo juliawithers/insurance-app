@@ -122,11 +122,10 @@ function manipulateDoctorData(responseJson){
 
   for(let i=0;i<responseJson.data.length;i++){
 
-    
     let objArr=[];
     console.log(responseJson.data[i].practices.length)
     for(let j=0;j<responseJson.data[i].practices.length;j++){
-        console.log(j)
+        // console.log(j)
       if(responseJson.data[i].practices[j].within_search_area === true){
         // Practice Name
         let practice_name = responseJson.data[i].practices[j].name;
@@ -156,7 +155,7 @@ function manipulateDoctorData(responseJson){
           street2: s_treet2,
           zip: z_ip
         })
-        }
+       
       
         // Name of Doctor 
         let first_name = responseJson.data[i].profile.first_name;
@@ -165,24 +164,24 @@ function manipulateDoctorData(responseJson){
         let special = responseJson.data[i].specialties[0].name
         
         let insuranceArr = [];
-        for (let j=0;j<responseJson.data[i].insurances.length;j++){
+        for (let k=0;k<responseJson.data[i].insurances.length;k++){
           // Insurances taken ***Highest 
         
-          if(responseJson.data[i].insurances[j] !== undefined && responseJson.data[i].insurances[j] !== undefined){
+          if(responseJson.data[i].insurances[k] !== undefined && responseJson.data[i].insurances[k] !== undefined){
 
-            let planName = responseJson.data[i].insurances[j].insurance_plan.name;
-            let provider = responseJson.data[i].insurances[j].insurance_provider.name;
+            let planName = responseJson.data[i].insurances[k].insurance_plan.name;
+            let provider = responseJson.data[i].insurances[k].insurance_provider.name;
             
             insuranceArr.push(planName+'-'+ provider);
           }
-          else if(responseJson.data[i].insurances[j] === undefined && responseJson.data[i].insurances[j] !== undefined){
+          else if(responseJson.data[i].insurances[k] === undefined && responseJson.data[i].insurances[k] !== undefined){
             let planName = "Not Available :(";
-            let provider = responseJson.data[i].insurances[j].insurance_provider.name;
+            let provider = responseJson.data[i].insurances[k].insurance_provider.name;
             
             insuranceArr.push(planName+'-'+ provider);
           } 
-          else if(responseJson.data[i].insurances[j] !== undefined && responseJson.data[i].insurances[j] === undefined){
-            let planName = responseJson.data[i].insurances[j].insurance_plan.name;
+          else if(responseJson.data[i].insurances[k] !== undefined && responseJson.data[i].insurances[k] === undefined){
+            let planName = responseJson.data[i].insurances[k].insurance_plan.name;
             let provider = "Not Available :(";
 
             insuranceArr.push(planName+'-'+ provider);
@@ -190,17 +189,18 @@ function manipulateDoctorData(responseJson){
           } 
           else{
             insuranceArr.push('Unfortunately, no Insurance is listed for this provider')
-            // renderListItemDoctor("","","","","")
           }
       }
-      } 
-    // test logs:
+       // test logs:
     let insurance = insuranceArr.join(' &<br>')
     console.log(insurance)
     console.log(objArr)
     console.log(first_name)
     console.log(last_name)
     renderListItemDoctor(first_name,last_name,special,objArr,insurance)
+     }
+    } 
+   
   }
 }
 
@@ -208,7 +208,7 @@ function manipulateDoctorData(responseJson){
 function renderListItemDoctor(first_name,last_name,special,objArr,insurance){
   // will render the lists onto ul class="listResults"
   // first_name,last_name,special,practice_name,distance,hours,phone,city,state,street,street2,zip,insuranceArr
-  
+  if(insurance !==""){
   for (let i=0;i<objArr.length;i++){
     $('.listResults').append(
       `<li class="return_data">
@@ -225,8 +225,8 @@ function renderListItemDoctor(first_name,last_name,special,objArr,insurance){
           <p></p>
         </div>
       </li>`
-    )
-    
+      )
+    }
   }
 }
 
