@@ -1,26 +1,14 @@
 let apiKey_BD = '4b7a78e632642f4b6da68fcd56a2c6ae';
-let srcDoctors = 'https://api.betterdoctor.com/2016-03-01/doctors?';
-let srcPractices = 'https://api.betterdoctor.com/2016-03-01/practices?';
-let srcPredictive = 'http://www.mapquestapi.com/search/v3/prediction?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&collection=address,franchise&countryCode=US&languageCod=en&limit=15&q=';
+let srcDoctors = 'https://api.betterdoctor.com/2016-03-01/doctors?sort=distance-asc&skip=0&limit=15&';
+let srcPredictive = 'http://www.mapquestapi.com/search/v3/prediction?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&collection=address,franchise&languageCod=en&limit=15&q=';
 let srcMap ='http://www.mapquestapi.com/geocoding/v1/address?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&location=';
 
 // 1210 Druid Hills Reserve Drive, Atlanta, GA 30329
 
 // Possible inputs: 
-// name
-// let specialty_uid =  - is a comma separated list of specialties
-// let insurance_uid =  -same but for insurance
-// let practice_uid= - same but for practices
-// the two required criteria:
-// 
-// let user_location= - important to give distance response parameter from response. how to get it though? address? so need the geocoding api to translate to lat long
-// let radius = will go in range
-// let location= - lat,long,range
-// practice
-// doctor
-// specialty - use specialty search
-// practice & doctor, use the doctor search to see if that doctor is at that practice.
-// practice & doctor & specialty: doctor search using practice uid, doctor name, and specialty.  
+// User Location - need to add predictive text
+// Radius of search
+// Specialty 
 function getHealthData(userLocation, radius, specialty, doctor, practice){
   console.log(userLocation)
   console.log(radius)
@@ -28,55 +16,13 @@ function getHealthData(userLocation, radius, specialty, doctor, practice){
   console.log(doctor)
   console.log(practice)
 // scenario for just required input - practices endpoint
-  if (specialty === "" & doctor === "" & practice === ""){
-    let source = srcDoctors+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
+  if (specialty === ""){
+    let source = srcDoctors+'user_key='+ apiKey_BD;
     useDoctors(source, userLocation,radius)
   }
 // scenario for required + specialty - doctor endpoint
-  else if (doctor === "" & practice === ""){
-    let source = srcDoctors+'specialty_uid='+specialty+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
-    console.log(source)
-
-    useDoctors(source,userLocation,radius)
-  }
-// scenario for required + doctor - doctor endpoint
-  else if (specialty === "" & practice === ""){
-    let source = srcDoctors+'&name='+doctor+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
-    console.log(source)
-
-    useDoctors(source,userLocation,radius)
-  }
-// scenario for required + practice - practices endpoint
-  else if (specialty === "" & doctor === ""){
- let source = srcDoctors+'&name='+practice+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
-    console.log(source)
-
-    useDoctors(source,userLocation,radius)
-  }
-// scenario for required + specialty + doctor - doctor endpoint
-  else if (practice === ""){
-    let source = srcDoctors+'&specialty_uid='+specialty+'&name='+doctor+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
-    console.log(source)
-
-    useDoctors(source,userLocation,radius)
-  }
-// scenario for required + specialty + practice - doctor endpoint
-  else if (doctor === ""){
-    let source = srcDoctors+'&practice_uid='+practice+'&specialty_uid='+specialty+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
-    console.log(source)
-
-    useDoctors(source,userLocation,radius)
-  }
-// scenario for required + doctor + practice - doctor endpoint
-  else if (specialty === ""){
-    let source = srcDoctors+'&name='+doctor+'&practice_uid='+practice+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
-    console.log(source)
-
-    useDoctors(source,userLocation,radius)
-  }
-// scenario for required + specialty + doctor + practice - doctor endpoint
-  else {
-    let source = srcDoctors+'&name='+doctor+'&practice_uid='+practice+'&specialty_uid='+specialty+'&sort=distance-asc&skip=0&limit=10&user_key='+ apiKey_BD;
+  else if (specialty !== ""){
+    let source = srcDoctors+'specialty_uid='+specialty+'&user_key='+ apiKey_BD;
     console.log(source)
 
     useDoctors(source,userLocation,radius)
@@ -113,7 +59,7 @@ function fetchHealthDataDoctor(source){
 // **********Manipulate the Response**********
 // NEXT STEPS: Must have a contingency for the data below to have empty fields
 function manipulateDoctorData(responseJson){
-  console.log(responseJson)
+  //console.log(responseJson)
   // Need to add the URL links to pages
   if (responseJson.data.length === 0){
     // <p class="hidden" id="error_message"></p>
@@ -121,113 +67,127 @@ function manipulateDoctorData(responseJson){
   }
 
   for(let i=0;i<responseJson.data.length;i++){
+    const doctor = responseJson.data[i];
 
-    let objArr=[];
-    console.log(responseJson.data[i].practices.length)
-    for(let j=0;j<responseJson.data[i].practices.length;j++){
-        // console.log(j)
-      if(responseJson.data[i].practices[j].within_search_area === true){
+    // get the doctor data and save in the object
+    const doctorData = {
+      firstName: doctor.profile.first_name,
+      lastName: doctor.profile.last_name,
+      specialty: doctor.specialties[0].name,
+      practiceData: generatePracticeData(doctor), //send to function to create this data
+      insuranceData: generateInsuranceData(doctor) //send to function to create this data
+    }
+    console.log(doctorData)
+    renderListItemDoctor(doctorData)
+  }
+} //end of manipulateDoctorData
+
+function generatePracticeData(doctor){
+    // create the practice data
+    const practiceArr = []
+    for(let i=0;i<doctor.practices.length;i++){
+      const practice = doctor.practices[i];
+              // console.log(j)
+      if(doctor.practices[i].within_search_area === true){
         // Practice Name
-        let practice_name = responseJson.data[i].practices[j].name;
+        let practice_name = practice.name;
         // Distance from userLocation
-        let dist = responseJson.data[i].practices[j].distance;
+        let dist = practice.distance;
         // let distNum = parseInt(dist,10);
         let dist_ance = dist.toFixed(2);
         // Phone Number
-        let ph = responseJson.data[i].practices[j].phones[0].number 
+        let ph = practice.phones[0].number 
         let area = ph.slice(0,3)
         let three_dig = ph.slice(3,6)
         let four_dig = ph.slice(6,10)
         let ph_num = [area,three_dig,four_dig].join('-')
         // Location Address
-        let ci_ty = responseJson.data[i].practices[j].visit_address.city;
-        let st_ate = responseJson.data[i].practices[j].visit_address.state;
-        let s_treet = responseJson.data[i].practices[j].visit_address.street;
-        let s_treet2 = responseJson.data[i].practices[j].visit_address.street2;
-        let z_ip = responseJson.data[i].practices[j].visit_address.zip;
-        objArr.push({
-          practice: practice_name,
+        let ci_ty = practice.visit_address.city;
+        let st_ate = practice.visit_address.state;
+        let s_treet = practice.visit_address.street;
+        // let s_treet2 = doctor.practices[i].visit_address.street2;
+        let z_ip = practice.visit_address.zip;
+        practiceArr.push({
+          pracTice: practice_name,
           distance: dist_ance,
           phone: ph_num,
           city: ci_ty,
           state: st_ate,
           street: s_treet,
-          street2: s_treet2,
           zip: z_ip
-        })
-       
+        }) 
+      }//end of if
       
-        // Name of Doctor 
-        let first_name = responseJson.data[i].profile.first_name;
-        let last_name = responseJson.data[i].profile.last_name;
-        // Specialty of Doctor
-        let special = responseJson.data[i].specialties[0].name
-        
-        let insuranceArr = [];
-        for (let k=0;k<responseJson.data[i].insurances.length;k++){
-          // Insurances taken ***Highest 
-        
-          if(responseJson.data[i].insurances[k] !== undefined && responseJson.data[i].insurances[k] !== undefined){
+    }//end of for
+    return practiceArr;
+} //end of generatePracticeData
 
-            let planName = responseJson.data[i].insurances[k].insurance_plan.name;
-            let provider = responseJson.data[i].insurances[k].insurance_provider.name;
-            
-            insuranceArr.push(planName+'-'+ provider);
-          }
-          else if(responseJson.data[i].insurances[k] === undefined && responseJson.data[i].insurances[k] !== undefined){
-            let planName = "Not Available :(";
-            let provider = responseJson.data[i].insurances[k].insurance_provider.name;
-            
-            insuranceArr.push(planName+'-'+ provider);
-          } 
-          else if(responseJson.data[i].insurances[k] !== undefined && responseJson.data[i].insurances[k] === undefined){
-            let planName = responseJson.data[i].insurances[k].insurance_plan.name;
-            let provider = "Not Available :(";
+// create the insurances data
+function generateInsuranceData(doctor){
+    let insuranceArr = [];
+    for (let i=0;i<doctor.insurances.length;i++){
+      // Insurances taken ***Highest 
+    
+      if(doctor.insurances[i] !== undefined && doctor.insurances[i] !== undefined){
 
-            insuranceArr.push(planName+'-'+ provider);
-            
-          } 
-          else{
-            insuranceArr.push('Unfortunately, no Insurance is listed for this provider')
-          }
+        let planName = doctor.insurances[i].insurance_plan.name;
+        let provider = doctor.insurances[i].insurance_provider.name;
+        
+        insuranceArr.push(planName+'-'+ provider);
       }
-       // test logs:
-    let insurance = insuranceArr.join(' &<br>')
-    console.log(insurance)
-    console.log(objArr)
-    console.log(first_name)
-    console.log(last_name)
-    renderListItemDoctor(first_name,last_name,special,objArr,insurance)
-     }
-    } 
-   
+      else if(doctor.insurances[i] === undefined && doctor.insurances[i] !== undefined){
+        let planName = "Not Available :(";
+        let provider = doctor.insurances[i].insurance_provider.name;
+        
+        insuranceArr.push(planName+'-'+ provider);
+      } 
+      else if(doctor.insurances[i] !== undefined && doctor.insurances[i] === undefined){
+        let planName = doctor.insurances[i].insurance_plan.name;
+        let provider = "Not Available :(";
+
+        insuranceArr.push(planName+'-'+ provider);
+        
+      } 
+      else{
+        insuranceArr.push('Unfortunately, no Insurance is listed for this provider')
+      } 
   }
+  // test logs:
+    const insurance = insuranceArr.join(' &<br>')
+    return insurance;  
 }
 
+
 // **********Must render the health data based off search params:**********
-function renderListItemDoctor(first_name,last_name,special,objArr,insurance){
+// const doctorData = {
+//   firstName: doctor.profile.first_name,
+//   lastName: doctor.profile.last_name,
+//   specialty: doctor.specialties[0].name,
+//   practiceData: generatePracticeData(doctor), //send to function to create this data
+//   insuranceData: generateInsuranceData(doctor) //send to function to create this data
+// }
+function renderListItemDoctor(doctorData){
   // will render the lists onto ul class="listResults"
   // first_name,last_name,special,practice_name,distance,hours,phone,city,state,street,street2,zip,insuranceArr
-  if(insurance !==""){
-  for (let i=0;i<objArr.length;i++){
-    $('.listResults').append(
-      `<li class="return_data">
-        
-        <div>
-          <h3>${first_name} ${last_name}</h3>
-          <p class="distance">${objArr[i].distance} Miles Away</p>
-          <p>Specialty: ${special}</p>
-          <p>Practice: ${objArr[i].practice}</p>
-          <div class="insurance">${insurance}</div>
-          <p>Phone: ${objArr[i].phone}</p>
-          <p>${objArr[i].street} ${objArr[i].street2}, 
-          ${objArr[i].city},<br>${objArr[i].state} ${objArr[i].zip}</p>
-          <p></p>
-        </div>
-      </li>`
-      )
+  if(doctorData.insuranceData !== ""){
+    for (let i=0;i<doctorData.practiceData.length;i++){
+      $('.listResults').append(
+        `<li class="return_data">
+          <div>
+            <h3>${doctorData.firstName} ${doctorData.lastName}</h3>
+            <p class="distance">${doctorData.practiceData[i].distance} Miles Away</p>
+            <p>Specialty: ${doctorData.specialty}</p>
+            <p>Practice: ${doctorData.practiceData[i].pracTice}</p>
+            <div class="insurance">${doctorData.insuranceData}</div>
+            <p>Phone: ${doctorData.practiceData[i].phone}</p>
+            <p>${doctorData.practiceData[i].street},
+            ${doctorData.practiceData[i].city},<br>${doctorData.practiceData[i].state} ${doctorData.practiceData[i].zip}</p>
+            <p></p>
+          </div>
+        </li>`
+        )
+      }
     }
-  }
 }
 
 
@@ -237,7 +197,7 @@ function parseLocation(userLocation){
   console.log(locSplit)
   return locSplit.join(",")
   
-}
+}//end of parseLocation
 
 // fetch the coordinates for the given address
 async function getGeo(address,source,radius){
@@ -253,7 +213,7 @@ async function getGeo(address,source,radius){
   let url = source+'&location='+userLatLong+','+radius+'&user_location='+userLatLong;
   console.log(url)
   return url
-}
+}//end of getGeo
 
 
 // create the string for BetterDoctor location search
@@ -266,7 +226,8 @@ function manipulateGeo(responseJson){
   console.log(latLong)
   return latLong
 
-}
+}//end of manipulateGeo
+
 // whatch the form for submittal
 function watchForm(){
   // watch for search button submit
@@ -283,7 +244,8 @@ function watchForm(){
     getHealthData(userLocation,radius,specialty,doctor,practice)
     }
   )
-}
+} //end of watchForm
+
 // Predictive text for addres - in progress
 // function watchPredictive(){
 //   $('.user_location').each(function(){
@@ -309,4 +271,9 @@ function watchForm(){
 //   console.log(respJson)
 // }
 // $(watchPredictive)
+
+// pediatrician, podiatrist, gynecologist, psychiatrist, optometrist, nephrologist, family medicine, internal medicine, orthopedic, dentist, dermatologist, psychologist
+// NEXT STEPS: finish the drop down select for specialty
+// finish predictive text for address
+// finish css
 $(watchForm)

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>inSUREance: Find Doctors and Practices that work for your coverage.</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Oswald&display=swap" rel="stylesheet">
   </head>
   <body>
       <main>
@@ -13,26 +14,34 @@
             <p>A quick way to find a provider near you. Input your location and search radius to quickly find a povider. A list of insurances taken will be generated, as well as specialty, location, and phone number.</p>
             <form action="submit" class="submit">
                 <fieldset class="fieldset">
-                    <legend>Location:<br>
-                        <input type="text" class="user_location" value="" placeholder="Please enter your address location" required>
+                    <legend>Location:(City, Zip, or Address)<br>
+                        <input type="text" class="user_location" value="" placeholder="Please enter your location" required>
                     </legend>
                     <legend>Search Radius(mi):<br>
                         <input type="text" class="radius" value="5" required>
                     </legend>
                     <legend>Specialty:<br>
                         <div class="addSpecialty">
-                        <input type="text" class="specialty_uid" value="" placeholder="Please enter a specialty to search">
+                        <select multiple  class="hidden" id="specialty">
+                            <option value="">Please enter a specialty to search</option>
+                            <option class="specialty_uid" value="Dentist" >Dentist</option >
+                            <option class="specialty_uid" value="Dermatologist">Dermatologist</option>
+                            <option class="specialty_uid" value="Gynecologist" >Gynecologist</option>
+                            <option class="specialty_uid" value="Nephrologist"  >Nephrologist</option>
+                            <option class="specialty_uid" value="Optometrist">Optometrist</option>
+                            <option class="specialty_uid" value="Orthopedic">Orthopedic</option>
+                            <option class="specialty_uid" value="Pediatrician">Pediatrician</option>
+                            <option class="specialty_uid" value="Podiatrist">Podiatrist</option>
+                            <option class="specialty_uid" value="Psychiatrist">Psychiatrist</option>
+                            <option class="specialty_uid" value="Psychologist">Psychologist</option>
+                        </select>
                         <br>
                         <button>Add Specialty</button>
                         </div>
                     </legend>
-                    <legend>Doctor:<br>
-                        <input type="text" class="doctor" value="" placeholder="Please enter a doctor">
-                    </legend>
-                    <legend>Practice:<br>
-                        <input type="text" class="practice" value="" placeholder="Please enter a practice name">
-                    </legend>
-                    <button class="search-submit">Search</button>
+                    <button class="search-submit">
+                        Search
+                    </button>
                 </fieldset>
             </form>
             </header>
