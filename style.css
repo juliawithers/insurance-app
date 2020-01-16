@@ -12,14 +12,16 @@ main{
 h1,h2,h3{
     font-family: 'Oswald', sans-serif; /* for headers*/
 }
+
 .fieldset{
     border: 0;
-    padding: 0;
-    margin: 5px;
+    padding: 0px;
+    margin: 10px;
     min-width: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
+
 }
 .submit{
     border: 2px solid white;
@@ -28,31 +30,36 @@ h1,h2,h3{
     margin-left: auto;
     margin-right: auto;
     width: 85%;
+    box-shadow: 5px 5px rgb(32, 178, 170.1)
 }
 legend{
-    display: inline-block;
     padding: 0;
     margin-top: 5px;
     margin-bottom: 5px;
 }
-.user_location,.specialty,.doctor,.practice{
+.user_location,.addSpecialty{
     width: 70%;
     padding: 5px;
-    margin-top: 5px;
+    margin-top: 10px;
     margin-bottom: 10px;
+    margin-left:auto;
+    margin-right: auto;
 }
 .radius{
     width: 10%;
     padding: 5px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    text-align: center;
 }
 .search-submit{
     margin-left: auto;
     margin-right: auto;
+    font-size: 150%;
 }
 button{
     font-family: 'Montserrat', sans-serif;
     background-color:skyblue ;
-    /* color: darksalmon; */
     font-size: 110%;
     border: 1px solid white;
     border-radius: 3px;
@@ -63,9 +70,66 @@ button:hover{
 }
 input{
     font-family: 'Montserrat', sans-serif; 
+    font-size: 110%;
 }
-/* edit returned data *//* modify the list items*/
+option{
+    font-size: 110%;
+}
+.hidden{
+  display: none;
+}
+#predictAdd{
+  cursor: pointer;
+  margin: 5px;
+  padding: 3px;
+  border: 1px solid darksalmon;
+}
 
+/* addSpecialty is the div/dropdown is the select class */
+select{
+  appearance: none;
+  font-family: 'Montserrat', sans-serif; 
+  width: 75%;
+  cursor: pointer;
+}
+.addSpecialty{
+  position: relative;
+  display: block;
+  height: 170px;
+  
+}
+.specialty_uid::selection{
+    background-color: skyblue;
+}
+
+/* Scroll Bars: */
+/* body */
+body{
+    height: 150px;
+}
+body::-webkit-scrollbar{
+    width: 1em;
+}
+
+body::-webkit-scrollbar-thumb{
+    background-color: darksalmon;
+    outline: 1px solid slategrey;
+}
+/* specialty select */
+.dropdown{
+    height: 150px;
+    padding-left: 5px;
+    line-height: 5;
+}
+.dropdown::-webkit-scrollbar{
+    width: 1em;
+}
+.dropdown::-webkit-scrollbar-thumb{
+    background-color: darksalmon;
+    outline: 1px solid slategrey;
+}
+
+/* edit returned data - modify the list items*/
 ul{
     padding: 0px;
     display: flex;
@@ -85,17 +149,42 @@ ul{
     border-radius: 3px;
     margin-left: auto;
     margin-right: auto;
+    position: relative;
+    box-shadow: 5px 5px rgb(32, 178, 170.1)
+}
+div>.container2{
+    widows: 100%;
+    background-color: whitesmoke;
 }
 div>.insurance{
     display: block;
     height: auto;
     background-color: whitesmoke;
-    padding: 5px; 
+    margin: 5px;
+    margin-left: 10px; 
+    padding: 5px;
+    text-align: left;
+    width: 85%;
+    line-height: 2;
+    
 } 
 
-.specialty_uid{
-    height: 1.5em;
+.upperLine{
+    display: block;
+    position: relative;
+    text-align: left;
+    margin-left: 10%;
 }
+
+.distance{
+    font-size: 90%;
+    height: 30px;
+    margin: 0px;
+    position: absolute;
+    top:1px;
+    left:1px;
+}
+
 /* screen sizes to consider: 320; 480; 600; 768; 900; 1024; 1200 */
 @media screen and (min-width: 320px){
     .return_data{
@@ -103,5 +192,42 @@ div>.insurance{
     }
     .submit{
         max-width: 80%;
+    }
+}
+@media screen and (min-width: 480px){
+    .return_data{
+        max-width: 70%
+    }
+    .submit{
+        max-width: 70%;
+    }
+    .description{
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+@media screen and (min-width: 768px){
+    div>.insurance{ 
+        margin-left: 15px; 
+    } 
+    .addSpecialty{
+        max-width: 341px;
+    }
+}
+@media screen and (min-width: 900px){
+    .return_data{
+        max-width: 60%
+    }
+    .submit{
+        max-width: 60%;
+    }
+    div>.insurance{ 
+        margin-left: 10%; 
+    } 
+    .description{
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
     }
 }

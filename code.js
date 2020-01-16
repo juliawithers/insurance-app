@@ -1,7 +1,7 @@
 let apiKey_BD = '4b7a78e632642f4b6da68fcd56a2c6ae';
 let srcDoctors = 'https://api.betterdoctor.com/2016-03-01/doctors?sort=distance-asc&skip=0&limit=15&';
-let srcPredictive = 'http://www.mapquestapi.com/search/v3/prediction?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&collection=address,franchise&languageCod=en&limit=15&q=';
-let srcMap ='http://www.mapquestapi.com/geocoding/v1/address?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&location=';
+let srcPredictive = 'https://www.mapquestapi.com/search/v3/prediction?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&collection=address&languageCod=en&limit=5&q=';
+let srcMap ='https://www.mapquestapi.com/geocoding/v1/address?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&location=';
 
 // 1210 Druid Hills Reserve Drive, Atlanta, GA 30329
 
@@ -9,22 +9,20 @@ let srcMap ='http://www.mapquestapi.com/geocoding/v1/address?key=c77LD6NXniLCkBG
 // User Location - need to add predictive text
 // Radius of search
 // Specialty 
-function getHealthData(userLocation, radius, specialty, doctor, practice){
+function getHealthData(userLocation, radius, specialty){
   console.log(userLocation)
   console.log(radius)
   console.log(specialty)
-  console.log(doctor)
-  console.log(practice)
 // scenario for just required input - practices endpoint
   if (specialty === ""){
     let source = srcDoctors+'user_key='+ apiKey_BD;
+    console.log(source)
     useDoctors(source, userLocation,radius)
   }
 // scenario for required + specialty - doctor endpoint
   else if (specialty !== ""){
     let source = srcDoctors+'specialty_uid='+specialty+'&user_key='+ apiKey_BD;
     console.log(source)
-
     useDoctors(source,userLocation,radius)
   }
 }
@@ -39,30 +37,30 @@ function useDoctors(source,userLocation,radius){
   .then(src=>{
     console.log(src)
     responseJson = fetchHealthDataDoctor(src)
-   })
+  })
+  .catch(err=>console.log(err))
+
 }
 
-// **********Must fetch the health data based of endpoint:********** 
-
-
-function fetchHealthDataDoctor(source){
-  fetch(source)
-  .then(response =>{
+// **********Fetch the health data:********** 
+function fetchHealthDataDoctor(src){
+   fetch(src)
+   .then(response =>{
     if(response.ok){
       return response.json()
     }
   })
-  .then(responseJson => manipulateDoctorData(responseJson))
-  .catch(error=>console.log(error))
+   .then(responseJson => manipulateDoctorData(responseJson))
+   .catch(error=>console.log(error))
 }
 
-// **********Manipulate the Response**********
-// NEXT STEPS: Must have a contingency for the data below to have empty fields
+// **********Manipulate the Health Data Response**********
 function manipulateDoctorData(responseJson){
-  //console.log(responseJson)
+  console.log(responseJson)
   // Need to add the URL links to pages
   if (responseJson.data.length === 0){
     // <p class="hidden" id="error_message"></p>
+    $('#error_message').toggleClass('hidden')
     $('#error_message').html(`Sorry, I could not find data for this search. Please try altering the inputs.`)
   }
 
@@ -133,19 +131,19 @@ function generateInsuranceData(doctor){
         let planName = doctor.insurances[i].insurance_plan.name;
         let provider = doctor.insurances[i].insurance_provider.name;
         
-        insuranceArr.push(planName+'-'+ provider);
+        insuranceArr.push('<b>-</b> '+planName +'-'+ provider);
       }
       else if(doctor.insurances[i] === undefined && doctor.insurances[i] !== undefined){
         let planName = "Not Available :(";
         let provider = doctor.insurances[i].insurance_provider.name;
         
-        insuranceArr.push(planName+'-'+ provider);
+        insuranceArr.push('<b>-</b> '+planName +'-'+ provider);
       } 
       else if(doctor.insurances[i] !== undefined && doctor.insurances[i] === undefined){
         let planName = doctor.insurances[i].insurance_plan.name;
         let provider = "Not Available :(";
 
-        insuranceArr.push(planName+'-'+ provider);
+        insuranceArr.push('<b>-</b> '+planName +'-'+ provider);
         
       } 
       else{
@@ -153,7 +151,7 @@ function generateInsuranceData(doctor){
       } 
   }
   // test logs:
-    const insurance = insuranceArr.join(' &<br>')
+    const insurance = insuranceArr.join('<br>')
     return insurance;  
 }
 
@@ -173,12 +171,17 @@ function renderListItemDoctor(doctorData){
     for (let i=0;i<doctorData.practiceData.length;i++){
       $('.listResults').append(
         `<li class="return_data">
-          <div>
-            <h3>${doctorData.firstName} ${doctorData.lastName}</h3>
-            <p class="distance">${doctorData.practiceData[i].distance} Miles Away</p>
-            <p>Specialty: ${doctorData.specialty}</p>
-            <p>Practice: ${doctorData.practiceData[i].pracTice}</p>
-            <div class="insurance">${doctorData.insuranceData}</div>
+          <p class="distance">${doctorData.practiceData[i].distance} mi</p>
+          <div class="container">
+            <div class="upperLine">
+              <h2 class="doctor_name">${doctorData.firstName} ${doctorData.lastName} - ${doctorData.specialty}</h2>
+              <p class="practice_box"> ${doctorData.practiceData[i].pracTice}</p>
+            </div>
+            <div class="container2">
+              <div class="insurance">
+                ${doctorData.insuranceData}
+              </div>
+            </div>
             <p>Phone: ${doctorData.practiceData[i].phone}</p>
             <p>${doctorData.practiceData[i].street},
             ${doctorData.practiceData[i].city},<br>${doctorData.practiceData[i].state} ${doctorData.practiceData[i].zip}</p>
@@ -194,17 +197,16 @@ function renderListItemDoctor(doctorData){
 // create proper address format for geolocation conversion
 function parseLocation(userLocation){
   let locSplit = userLocation.split(/,?\s+/);
-  console.log(locSplit)
   return locSplit.join(",")
   
 }//end of parseLocation
 
 // fetch the coordinates for the given address
 async function getGeo(address,source,radius){
-  let src = srcMap+address
-  console.log(src)
+  let srcGeo = srcMap+address
+  console.log(srcGeo)
 
-  const resp = await fetch(src)
+  const resp = await fetch(srcGeo)
   const responseJson = await resp.json()
 
   userLatLong = manipulateGeo(responseJson)
@@ -231,29 +233,54 @@ function manipulateGeo(responseJson){
 // whatch the form for submittal
 function watchForm(){
   // watch for search button submit
+  // watchPredictive()
+  // let predAdd = selectAdd()
   $('.submit').submit(e=>{
-    e.preventDefault();
-    $('.listResults').empty()
-    $('#error_message').empty()
-    let userLocation = $('.user_location').val();
-    let radius = $('.radius').val();
-    let specialty = $('.specialty_uid').val();
-    // Note that specialty takes input like dentist, pediatrist, pediatrics, endocrinologist. not dentistry, pediatry, pediatrics. Should eventually provide a drop down list of common practice specialties.
-    let doctor = $('.doctor').val();
-    let practice = $('.practice').val();
-    getHealthData(userLocation,radius,specialty,doctor,practice)
-    }
-  )
+      e.preventDefault();
+      $('.listResults').empty()
+      $('#error_message').empty()
+      // $('.specialty_uid').onclick(function(){
+      //   $(this).css('background-color','skyblue')
+      // })
+      let radius = $('.radius').val();
+      let specialty = $('#drop').val().toString();
+      let userLocation = $('.user_location').val();
+      getHealthData(userLocation,radius,specialty)
+      
+      // for future predictive text: 
+      // let cityZip = $('.user_location_cityZip').val();
+      // console.log(cityZip)
+      // let predAdd = $('.user_location_predAdd').val();
+      // console.log(predAdd)
+      // // $('.user_location_predAdd').html(predAdd)
+      // console.log(typeof predAdd)
+      //   if (cityZip === "" && predAdd !== ""){
+      //     let userLocation = predAdd;
+      //     // let userLocation = watchPredictive(userLoc)
+      //     getHealthData(userLocation,radius,specialty)
+      //   }
+      //   else if (cityZip !== "" && predAdd === ""){
+      //     let userLocation = cityZip;
+      //     getHealthData(userLocation,radius,specialty)
+      //   }
+      //   else if (cityZip ==="" && predAdd === ""){
+      //     $('#alert').html("Please enter a location. Either by city/zip or specific address")
+      //   }
+      //   else{
+      //     $('#alert').html("Please choose to search by city/zip OR address, but not both")
+      //   }
+      // Note that specialty takes input like dentist, pediatrist, pediatrics, endocrinologist. not dentistry, pediatry, pediatrics. Should eventually provide a drop down list of common practice specialties.
+      }
+    )
 } //end of watchForm
+$(watchForm)
 
-// Predictive text for addres - in progress
+// *****For Future Use- Predictive Address *****
 // function watchPredictive(){
-//   $('.user_location').each(function(){
-//     let elem = $(this);
-//   })
-
-//   $('.user_location').on("keypress keydown keyup change",function(event){
-//     let src = srcPredictive+$('.user_location')
+//   // keypress keydown keyup 
+//   $('.user_location_predAdd').on('change ',function(event){
+//     let currentAdd = $('.user_location_predAdd').val();
+//     let src = srcPredictive + currentAdd
 //     console.log(src)
 //     fetch(src)
 //     .then(resp =>{
@@ -264,16 +291,35 @@ function watchForm(){
 //     .then(respJson => renderPredictive(respJson))
 //     .catch(error => console.log(error.message))})
 // }
-// function usePredictive(){
+// // function usePredictive(){
 
+// // }
+// function renderPredictive(respJson){
+//   // console.log(respJson)
+//   $('#predictAdd').empty()
+//   console.log(respJson.results)
+//   $('#predictAdd').toggleClass('hidden')
+//   for(let i=0;i<respJson.results.length;i++){
+//     $('#predictAdd').append(`<div class="predicted" id="${i}" value="${respJson.results[i].displayString}">${respJson.results[i].displayString}</div>`)
+//   } 
 // }
-// function renderPredictive(responseJson){
-//   console.log(respJson)
+// function selectAdd(){ 
+//   // $('.user_location_predAdd').each(function(){
+//   //   let elem = $(this);
+//   // })
+//   // $('.predicted').on('click',function(){
+//       id = getElementByID($('.predicted').click())
+//       console.log(id)
+//       return $(id).val()
+  // })
 // }
+
+// *****************************************************
+// NEXT STEPS: finish the drop down select for specialty
+// finish predictive text for address???
+// finish css
+// after watchPredictive we call render, but may need to call a new function to select the data after it's rendered
+// try to link to google maps/mapquest? 
 // $(watchPredictive)
 
-// pediatrician, podiatrist, gynecologist, psychiatrist, optometrist, nephrologist, family medicine, internal medicine, orthopedic, dentist, dermatologist, psychologist
-// NEXT STEPS: finish the drop down select for specialty
-// finish predictive text for address
-// finish css
-$(watchForm)
+

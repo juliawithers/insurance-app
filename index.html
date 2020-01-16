@@ -11,34 +11,45 @@
       <main>
           <header>
             <h1>inSUREance</h1>
-            <p>A quick way to find a provider near you. Input your location and search radius to quickly find a povider. A list of insurances taken will be generated, as well as specialty, location, and phone number.</p>
+            <p class="description">A quick way to find out if a provider near you takes your insurance plan. Input your location and search radius to quickly find a povider. A list of insurances taken will be generated, as well as specialty, location, and phone number.</p>
             <form action="submit" class="submit">
                 <fieldset class="fieldset">
-                    <legend>Location:(City, Zip, or Address)<br>
-                        <input type="text" class="user_location" value="" placeholder="Please enter your location" required>
+                    <legend>*Location:(City, Zip, or Address)<br>
+                    <!-- <p>Search by city or zip code</p> -->
+                        <input type="text" class="user_location" value="" placeholder="Enter your location">
+                        <!-- <input type="text" class="user_location_cityZip" value="" placeholder="City or Zip">
+                        <p>OR Search by specific address</p>
+                        <input type="text" class="user_location_predAdd" value="" placeholder="Address">
+                        <div class="hidden" id="predictAdd"></div> -->
+                        <p class="hidden" id="alert"></P>
                     </legend>
-                    <legend>Search Radius(mi):<br>
+                    <legend>*Search Radius(mi):<br>
                         <input type="text" class="radius" value="5" required>
                     </legend>
                     <legend>Specialty:<br>
                         <div class="addSpecialty">
-                        <select multiple  class="hidden" id="specialty">
-                            <option value="">Please enter a specialty to search</option>
-                            <option class="specialty_uid" value="Dentist" >Dentist</option >
-                            <option class="specialty_uid" value="Dermatologist">Dermatologist</option>
-                            <option class="specialty_uid" value="Gynecologist" >Gynecologist</option>
-                            <option class="specialty_uid" value="Nephrologist"  >Nephrologist</option>
-                            <option class="specialty_uid" value="Optometrist">Optometrist</option>
-                            <option class="specialty_uid" value="Orthopedic">Orthopedic</option>
-                            <option class="specialty_uid" value="Pediatrician">Pediatrician</option>
-                            <option class="specialty_uid" value="Podiatrist">Podiatrist</option>
-                            <option class="specialty_uid" value="Psychiatrist">Psychiatrist</option>
-                            <option class="specialty_uid" value="Psychologist">Psychologist</option>
-                        </select>
-                        <br>
-                        <button>Add Specialty</button>
+                            <select multiple  class="dropdown" id="drop">
+                                <option value = '' selected>None</option>
+                                <option class="specialty_uid" value="allergist">Allergist</option>
+                                <option class="specialty_uid" value="cardiologist">Cardiologist</option>
+                                <option class="specialty_uid" value="dentist" >Dentist</option >
+                                <option class="specialty_uid" value="dermatologist">Dermatologist</option>
+                                <option class="specialty_uid" value="gynecologist">Gynecologist</option>
+                                <option class="specialty_uid" value="immunologist">Immunologist</option>
+                                <option class="specialty_uid" value="nephrologist">Nephrologist</option>
+                                <option class="specialty_uid" value="neurologist">Neurologist</option>
+                                <option class="specialty_uid" value="optometrist">Optometrist</option>
+                                <option class="specialty_uid" value="orthopedic">Orthopedic</option>
+                                <option class="specialty_uid" value="pediatrician">Pediatrician</option>
+                                <option class="specialty_uid" value="podiatrist">Podiatrist</option>
+                                <option class="specialty_uid" value="psychiatrist">Psychiatrist</option>
+                                <option class="specialty_uid" value="psychologist">Psychologist</option>
+                                <!-- neurologist, cardiologist, allergist, immunologist -->
+                            </select>
+                        
                         </div>
                     </legend>
+                    <p>*Indicates required field.</p>
                     <button class="search-submit">
                         Search
                     </button>
