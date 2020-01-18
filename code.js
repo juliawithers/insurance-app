@@ -1,7 +1,7 @@
 
 let apiKey_BD = '4b7a78e632642f4b6da68fcd56a2c6ae';
 let srcDoctors = 'https://cors-anywhere.herokuapp.com/https://api.betterdoctor.com/2016-03-01/doctors?sort=distance-asc&skip=0&limit=15&';
-let srcPredictive = 'https://cors-anywhere.herokuapp.com/https://www.mapquestapi.com/search/v3/prediction?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&collection=address&languageCod=en&limit=5&q=';
+let srcPredictive = 'https://www.mapquestapi.com/search/v3/prediction?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&collection=address&languageCod=en&limit=5&q=';
 let srcMap ='https://www.mapquestapi.com/geocoding/v1/address?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&location=';
 
 // 1210 Druid Hills Reserve Drive, Atlanta, GA 30329
