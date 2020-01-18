@@ -2,9 +2,21 @@
     box-sizing: border-box;
 }
 html{
-    background-color: rgb(32, 178, 170,0.5);
+    /* background-color: rgb(32, 178, 170,0.5);   */
     
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: url('https://doctorokz.com/wp-content/uploads/2018/02/bg1.png');
+  background-size: cover;
+  min-height: 100vh;
+}
+
 main{
     text-align: center;
     font-family: 'Montserrat', sans-serif;
@@ -24,9 +36,9 @@ h1,h2,h3{
 
 }
 .submit{
-    border: 2px solid white;
+    padding: 5px;
     border-radius: 3px;
-    background-color: white;
+    background-color: rgba(256,256,256,.8);
     margin-left: auto;
     margin-right: auto;
     width: 85%;
@@ -34,20 +46,26 @@ h1,h2,h3{
 }
 legend{
     padding: 0;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 5px;
     margin-bottom: 5px;
 }
-.user_location,.addSpecialty{
-    width: 70%;
+input>.user_location , .addSpecialty{
+    width: auto;
     padding: 5px;
     margin-top: 10px;
     margin-bottom: 10px;
     margin-left:auto;
     margin-right: auto;
 }
+.user_location{
+    text-indent: 10px;;
+}
 .radius{
     width: 10%;
-    padding: 5px;
+    text-indent: 5px;
     margin-bottom: 10px;
     margin-top: 10px;
     text-align: center;
@@ -61,7 +79,7 @@ button{
     font-family: 'Montserrat', sans-serif;
     background-color:skyblue ;
     font-size: 110%;
-    border: 1px solid white;
+    border: none;
     border-radius: 3px;
     cursor: pointer;
 }
@@ -159,6 +177,7 @@ div>.container2{
 div>.insurance{
     display: block;
     height: auto;
+    overflow:hidden;
     background-color: whitesmoke;
     margin: 5px;
     margin-left: 10px; 
@@ -166,6 +185,7 @@ div>.insurance{
     text-align: left;
     width: 85%;
     line-height: 2;
+    white-space: pre-line;
     
 } 
 
@@ -184,7 +204,11 @@ div>.insurance{
     top:1px;
     left:1px;
 }
+.showMore,.showLess{
+    display: block;
+    justify-content: center;
 
+}
 /* screen sizes to consider: 320; 480; 600; 768; 900; 1024; 1200 */
 @media screen and (min-width: 320px){
     .return_data{

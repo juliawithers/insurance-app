@@ -14,21 +14,16 @@
             <p class="description">A quick way to find out if a provider near you takes your insurance plan. Input your location and search radius to quickly find a povider. A list of insurances taken will be generated, as well as specialty, location, and phone number.</p>
             <form action="submit" class="submit">
                 <fieldset class="fieldset">
-                    <legend>*Location:(City, Zip, or Address)<br>
-                    <!-- <p>Search by city or zip code</p> -->
-                        <input type="text" class="user_location" value="" placeholder="Enter your location">
-                        <!-- <input type="text" class="user_location_cityZip" value="" placeholder="City or Zip">
-                        <p>OR Search by specific address</p>
-                        <input type="text" class="user_location_predAdd" value="" placeholder="Address">
-                        <div class="hidden" id="predictAdd"></div> -->
-                        <p class="hidden" id="alert"></P>
+                    <legend>* Location:(City, Zip, or Address)<br>
+                        <input type="text" class="user_location" value="" placeholder="Enter your location" required>
                     </legend>
-                    <legend>*Search Radius(mi):<br>
+                    <legend>* Search Radius(mi):<br>
                         <input type="text" class="radius" value="5" required>
                     </legend>
+                    <p class="hidden" id="alert"></P>
                     <legend>Specialty:<br>
                         <div class="addSpecialty">
-                            <select multiple  class="dropdown" id="drop">
+                            <select multiple class="dropdown" id="drop">
                                 <option value = '' selected>None</option>
                                 <option class="specialty_uid" value="allergist">Allergist</option>
                                 <option class="specialty_uid" value="cardiologist">Cardiologist</option>
@@ -44,12 +39,10 @@
                                 <option class="specialty_uid" value="podiatrist">Podiatrist</option>
                                 <option class="specialty_uid" value="psychiatrist">Psychiatrist</option>
                                 <option class="specialty_uid" value="psychologist">Psychologist</option>
-                                <!-- neurologist, cardiologist, allergist, immunologist -->
                             </select>
-                        
                         </div>
                     </legend>
-                    <p>*Indicates required field.</p>
+                    <p>* Indicates required field.</p>
                     <button class="search-submit">
                         Search
                     </button>
