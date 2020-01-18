@@ -172,7 +172,7 @@ function renderListItemDoctor(doctorData){
     for (let i=0;i<doctorData.practiceData.length;i++){ 
       $('.listResults').append(
         `<li class="return_data">
-          <p class="distance"><b class="count">${count}</b> - ${doctorData.practiceData[i].distance} mi</p>
+          <p class="distance"><b class="count">${count} - ${doctorData.practiceData[i].distance} mi</b></p>
           <div class="container">
             <div class="upperLine">
               <h2 class="doctor_name">${doctorData.firstName} ${doctorData.lastName} - ${doctorData.specialty}</h2>
