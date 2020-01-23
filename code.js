@@ -4,10 +4,8 @@ let srcDoctors = 'https://cors-anywhere.herokuapp.com/https://api.betterdoctor.c
 let srcPredictive = 'https://www.mapquestapi.com/search/v3/prediction?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&collection=address&languageCod=en&limit=5&q=';
 let srcMap ='https://www.mapquestapi.com/geocoding/v1/address?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&location=';
 
-// 1210 Druid Hills Reserve Drive, Atlanta, GA 30329
-
 // Possible inputs: 
-// User Location - need to add predictive text
+// User Location 
 // Radius of search
 // Specialty 
 function getHealthData(userLocation, radius, specialty){
@@ -48,9 +46,7 @@ function fetchHealthDataDoctor(src){
 
 // **********Manipulate the Health Data Response**********
 function manipulateDoctorData(responseJson){
-  // Need to add the URL links to pages
   if (responseJson.data.length === 0){
-    // <p class="hidden" id="error_message"></p>
     $('#error_message').toggleClass('hidden')
     $('#error_message').html(`Sorry, I could not find data for this search. Please try altering the inputs.`)
   }
@@ -82,7 +78,7 @@ function manipulateDoctorData(responseJson){
     doctorData.insuranceData = insJoin;
     renderListItemDoctor(doctorData)
   }
-} //end of manipulateDoctorData
+} 
 
 function generatePracticeData(doctor){
     // create the practice data
@@ -116,17 +112,16 @@ function generatePracticeData(doctor){
           street: s_treet,
           zip: z_ip,
         }) 
-      }//end of if 
-    }//end of for
+      }
+    }
     return practiceArr;
-} //end of generatePracticeData
+} 
 
 
 // create the insurances data
 function generateInsuranceData(doctor){
     let insuranceArr = [];
-    for (let i=0;i<doctor.insurances.length;i++){
-      // Insurances taken ***Highest   
+    for (let i=0;i<doctor.insurances.length;i++){ 
       if(doctor.insurances[i] !== undefined && doctor.insurances[i] !== undefined){
         let planName = doctor.insurances[i].insurance_plan.name;
         let provider = doctor.insurances[i].insurance_provider.name;       
@@ -146,7 +141,6 @@ function generateInsuranceData(doctor){
         insuranceArr.push('Unfortunately, no Insurance is listed for this provider')
       } 
   }
-  // test logs:
   return insuranceArr;  
 }
 
@@ -167,7 +161,6 @@ function splitData(insuranceArray,short,doctorData){
 // **********Must render the health data based off search params:**********
 let count = 1;
 function renderListItemDoctor(doctorData){
-  // will render the lists onto ul class="listResults"
   if(doctorData.insuranceData !== ""){
     for (let i=0;i<doctorData.practiceData.length;i++){ 
       $('.listResults').append(
@@ -201,6 +194,7 @@ function renderListItemDoctor(doctorData){
 function watchShow(){
   // Show More
   $('.listResults').on('click', '.showMore', function(e){ 
+    e.preventDefault();
     const id = $(e.target).attr('id')
     for(let i=0;i<insuranceObject.length;i++){
       if(id === insuranceObject[i].id){
@@ -210,6 +204,7 @@ function watchShow(){
   })
   // Show Less
   $('.listResults').on('click', '.showLess', function(e){
+    e.preventDefault();
     const id = $(e.target).attr('id')
     for(let i=0;i<insuranceObject.length;i++){
       if(id === insuranceObject[i].id){
@@ -223,8 +218,7 @@ function watchShow(){
 function parseLocation(userLocation){
   let locSplit = userLocation.split(/,?\s+/);
   return locSplit.join(",")
-  
-}//end of parseLocation
+}
 
 // fetch the coordinates for the given address
 async function getGeo(address,source,radius){
@@ -237,7 +231,7 @@ async function getGeo(address,source,radius){
 
   let url = source+'&location='+userLatLong+','+radius+'&user_location='+userLatLong;
   return url
-}//end of getGeo
+}
 
 
 // create the string for BetterDoctor location search
@@ -248,12 +242,10 @@ function manipulateGeo(responseJson){
   let long = responseJson.results[0].locations[0].latLng.lng;
   latLong = lat+','+long;
   return latLong
-
-}//end of manipulateGeo
+}
 
 // whatch the form for submittal
 function watchForm(){
-  // watch for search button submit
   $('.submit').submit(e=>{
       e.preventDefault();
       count = 1;
@@ -277,7 +269,7 @@ function watchForm(){
       getHealthData(userLocation,radius,specialty)
       }
     )
-} //end of watchForm
+} 
 
 function bindEventHandlers() {
   watchForm();
