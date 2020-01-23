@@ -130,17 +130,17 @@ function generateInsuranceData(doctor){
       if(doctor.insurances[i] !== undefined && doctor.insurances[i] !== undefined){
         let planName = doctor.insurances[i].insurance_plan.name;
         let provider = doctor.insurances[i].insurance_provider.name;       
-        insuranceArr.push("- "+planName +":"+ provider);
+        insuranceArr.push("- "+planName +" : "+ provider);
       }
       else if(doctor.insurances[i] === undefined && doctor.insurances[i] !== undefined){
         let planName = "Not Available :(";
         let provider = doctor.insurances[i].insurance_provider.name;        
-        insuranceArr.push("- "+planName +":"+ provider);
+        insuranceArr.push("- "+planName +" : "+ provider);
       } 
       else if(doctor.insurances[i] !== undefined && doctor.insurances[i] === undefined){
         let planName = doctor.insurances[i].insurance_plan.name;
         let provider = "Not Available :(";
-        insuranceArr.push("- "+planName +":"+ provider);
+        insuranceArr.push("- "+planName +" : "+ provider);
       } 
       else{
         insuranceArr.push('Unfortunately, no Insurance is listed for this provider')

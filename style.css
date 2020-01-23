@@ -1,10 +1,6 @@
 *{
     box-sizing: border-box;
 }
-html{
-    /* background-color: rgb(32, 178, 170,0.5);   */
-    
-}
 
 html, body {
   margin: 0;
@@ -12,7 +8,8 @@ html, body {
 }
 
 body {
-  background: url('https://doctorokz.com/wp-content/uploads/2018/02/bg1.png');
+  /* background: url('https://doctorokz.com/wp-content/uploads/2018/02/bg1.png'); */
+  background: url(AdobeStock_214437078-1-1024x724.jpeg);
   background-size: cover;
   min-height: 100vh;
 }
@@ -25,6 +22,7 @@ h1,h2,h3{
     font-family: 'Oswald', sans-serif; /* for headers*/
 }
 
+/* set form css */
 .fieldset{
     border: 0;
     padding: 0px;
@@ -33,7 +31,6 @@ h1,h2,h3{
     display: flex;
     flex-direction: column;
     justify-content: center;
-
 }
 .submit{
     padding: 5px;
@@ -41,7 +38,7 @@ h1,h2,h3{
     background-color: rgba(256,256,256,.8);
     margin-left: auto;
     margin-right: auto;
-    width: 85%;
+    width: 90%;
     box-shadow: 5px 5px rgb(32, 178, 170.1)
 }
 legend{
@@ -51,8 +48,9 @@ legend{
     margin-right: auto;
     margin-top: 5px;
     margin-bottom: 5px;
+    text-align: center;
 }
-input>.user_location , .addSpecialty{
+input{
     width: auto;
     padding: 5px;
     margin-top: 10px;
@@ -62,6 +60,7 @@ input>.user_location , .addSpecialty{
 }
 .user_location{
     text-align: center;
+    width: 100%;
 }
 .radius{
     width: 20%;
@@ -83,7 +82,7 @@ button{
     cursor: pointer;
 }
 button:hover{
-    box-shadow: 3px 3px darksalmon;
+    box-shadow: 3px 3px rgb(32, 178, 170.1);
 }
 input{
     font-family: 'Montserrat', sans-serif; 
@@ -93,27 +92,27 @@ option{
     font-size: 110%;
 }
 .hidden{
-  display: none;
-}
-#predictAdd{
-  cursor: pointer;
-  margin: 5px;
-  padding: 3px;
-  border: 1px solid darksalmon;
+    display: none;
 }
 
-/* addSpecialty is the div/dropdown is the select class */
+
+/* select specialty */
 select{
-  appearance: none;
-  font-family: 'Montserrat', sans-serif; 
-  width: auto;
-  cursor: pointer;
+    appearance: none;
+    font-family: 'Montserrat', sans-serif; 
+    width: auto;
+    cursor: pointer;
 }
 .addSpecialty{
-  position: relative;
-  display: block;
-  height:auto;
-  
+    position: relative;
+    display: block;
+    height:auto;
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .specialty_uid::selection{
     background-color: skyblue;
@@ -129,7 +128,7 @@ body::-webkit-scrollbar{
 }
 
 body::-webkit-scrollbar-thumb{
-    background-color: darksalmon;
+    background-color: skyblue;
     outline: 1px solid slategrey;
 }
 /* specialty select */
@@ -142,16 +141,20 @@ body::-webkit-scrollbar-thumb{
     width: 1em;
 }
 .dropdown::-webkit-scrollbar-thumb{
-    background-color: darksalmon;
+    background-color: skyblue;
     outline: 1px solid slategrey;
 }
 
 /* edit returned data - modify the list items*/
+.results{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
 ul{
     padding: 0px;
     display: flex;
     flex-grow:1;
-    max-width: 90%;
     flex-direction: column;
     margin-left: auto;
     margin-right: auto;
@@ -159,18 +162,18 @@ ul{
 .return_data{
     list-style-type: none;
     display: block;
-    width: 85%;
     border: 3px solid white;
     margin: 15px 10px 15px 10px; 
-    background-color: white;
+    background-color: rgb(255, 255, 255, .8);
     border-radius: 3px;
     margin-left: auto;
     margin-right: auto;
     position: relative;
-    box-shadow: 5px 5px rgb(32, 178, 170.1)
+    box-shadow: 5px 5px rgb(32, 178, 170.1);
+    width: 100%;
 }
 div>.container2{
-    widows: 100%;
+    width: 100%;
     background-color: whitesmoke;
 }
 div>.insurance{
@@ -185,16 +188,13 @@ div>.insurance{
     width: 85%;
     line-height: 2;
     white-space: pre-line;
-    
 } 
-
 .upperLine{
     display: block;
     position: relative;
     text-align: left;
     margin-left: 10%;
 }
-
 .distance{
     font-size: 90%;
     height: 30px;
@@ -210,19 +210,19 @@ div>.insurance{
 }
 /* screen sizes to consider: 320; 480; 600; 768; 900; 1024; 1200 */
 @media screen and (min-width: 320px){
-    .return_data{
-        max-width: 80%
+    .results{
+        width: 80%
     }
     .submit{
-        max-width: 80%;
+        width: 80%;
     }
 }
 @media screen and (min-width: 480px){
-    .return_data{
-        max-width: 70%
+    .results{
+        width: 70%
     }
     .submit{
-        max-width: 70%;
+        width: 70%;
     }
     .description{
         width: 80%;
@@ -239,17 +239,17 @@ div>.insurance{
     }
 }
 @media screen and (min-width: 900px){
-    .return_data{
-        max-width: 60%
+    .results{
+        max-width: 650px;
     }
     .submit{
-        max-width: 60%;
+        max-width: 750px;
     }
     div>.insurance{ 
         margin-left: 10%; 
     } 
     .description{
-        width: 70%;
+        width: 50%;
         margin-left: auto;
         margin-right: auto;
     }

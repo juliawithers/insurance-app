@@ -6,18 +6,21 @@
     <title>inSUREance: Find Doctors and Practices that work for your coverage.</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Oswald&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   </head>
   <body>
       <main>
           <header>
             <h1>inSUREance</h1>
-            <p class="description">A quick way to find out if a provider near you takes your insurance plan. Input your location and search radius to quickly find a povider. A list of insurances taken will be generated, as well as specialty, location, and phone number.</p>
+            <p class="description">A quick way to find out if a provider near you takes your insurance plan. Input your location and search radius to quickly find a povider. A list of insurances taken will be generated, as well as specialty, location, phone number, and address.</p>
             <form action="submit" class="submit">
                 <fieldset class="fieldset">
-                    <legend>* Location:(City, Zip, or Address)<br>
+                    <legend>* Location (City, Zip, or Address):<br>
                         <input type="text" class="user_location" value="" placeholder="Enter your location" required>
                     </legend>
-                    <legend>* Search Radius(mi):<br>
+                    <legend>* Search Radius (mi):<br>
                         <input type="text" class="radius" value="5" required>
                     </legend>
                     <p class="hidden" id="alert"></P>
