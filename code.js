@@ -1,7 +1,6 @@
 
 let apiKey_BD = '4b7a78e632642f4b6da68fcd56a2c6ae';
 let srcDoctors = 'https://cors-anywhere.herokuapp.com/https://api.betterdoctor.com/2016-03-01/doctors?sort=distance-asc&skip=0&limit=15&';
-let srcPredictive = 'https://www.mapquestapi.com/search/v3/prediction?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&collection=address&languageCod=en&limit=5&q=';
 let srcMap ='https://www.mapquestapi.com/geocoding/v1/address?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&location=';
 
 // Possible inputs: 
@@ -125,17 +124,17 @@ function generateInsuranceData(doctor){
       if(doctor.insurances[i] !== undefined && doctor.insurances[i] !== undefined){
         let planName = doctor.insurances[i].insurance_plan.name;
         let provider = doctor.insurances[i].insurance_provider.name;       
-        insuranceArr.push("- "+planName +" : "+ provider);
+        insuranceArr.push('- '+planName +' : '+ provider);
       }
       else if(doctor.insurances[i] === undefined && doctor.insurances[i] !== undefined){
-        let planName = "Not Available :(";
+        let planName = 'Not Available :(';
         let provider = doctor.insurances[i].insurance_provider.name;        
-        insuranceArr.push("- "+planName +" : "+ provider);
+        insuranceArr.push('- '+planName +' : '+ provider);
       } 
       else if(doctor.insurances[i] !== undefined && doctor.insurances[i] === undefined){
         let planName = doctor.insurances[i].insurance_plan.name;
-        let provider = "Not Available :(";
-        insuranceArr.push("- "+planName +" : "+ provider);
+        let provider = 'Not Available :(';
+        insuranceArr.push('- '+planName +' : '+ provider);
       } 
       else{
         insuranceArr.push('Unfortunately, no Insurance is listed for this provider')
@@ -198,7 +197,7 @@ function watchShow(){
     const id = $(e.target).attr('id')
     for(let i=0;i<insuranceObject.length;i++){
       if(id === insuranceObject[i].id){
-        $(e.target).closest('.insurance p').html(`${insuranceObject[i].insArray.join("\n")}<button class="showLess" id="${id}">Show Less</button>`); 
+        $(e.target).closest('.insurance p').html(`${insuranceObject[i].insArray.join('\n')}<button class="showLess" id="${id}">Show Less</button>`); 
       }
     }
   })
@@ -208,7 +207,7 @@ function watchShow(){
     const id = $(e.target).attr('id')
     for(let i=0;i<insuranceObject.length;i++){
       if(id === insuranceObject[i].id){
-        $(e.target).closest('.insurance p').html(`${insuranceObject[i].insShort.join("\n")}<button class="showMore" id="${id}">Show More</button>`); 
+        $(e.target).closest('.insurance p').html(`${insuranceObject[i].insShort.join('\n')}<button class="showMore" id="${id}">Show More</button>`); 
       }
     }
   })
@@ -217,7 +216,7 @@ function watchShow(){
 // create proper address format for geolocation conversion
 function parseLocation(userLocation){
   let locSplit = userLocation.split(/,?\s+/);
-  return locSplit.join(",")
+  return locSplit.join(',')
 }
 
 // fetch the coordinates for the given address
