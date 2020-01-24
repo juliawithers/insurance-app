@@ -162,7 +162,7 @@ let count = 1;
 function renderListItemDoctor(doctorData){
   if(doctorData.insuranceData !== ""){
     for (let i=0;i<doctorData.practiceData.length;i++){ 
-      $('.listResults').append(
+      $('.list-Results').append(
         `<li class="return_data">
           <p class="distance"><b class="count">${count} - ${doctorData.practiceData[i].distance} mi</b></p>
           <div class="container">
@@ -192,7 +192,7 @@ function renderListItemDoctor(doctorData){
 // Need to figure out how to populate the short and long lists easily 
 function watchShow(){
   // Show More
-  $('.listResults').on('click', '.showMore', function(e){ 
+  $('.list-Results').on('click', '.showMore', function(e){ 
     e.preventDefault();
     const id = $(e.target).attr('id')
     for(let i=0;i<insuranceObject.length;i++){
@@ -202,7 +202,7 @@ function watchShow(){
     }
   })
   // Show Less
-  $('.listResults').on('click', '.showLess', function(e){
+  $('.list-Results').on('click', '.showLess', function(e){
     e.preventDefault();
     const id = $(e.target).attr('id')
     for(let i=0;i<insuranceObject.length;i++){
@@ -248,7 +248,7 @@ function watchForm(){
   $('.submit').submit(e=>{
       e.preventDefault();
       count = 1;
-      $('.listResults').empty()
+      $('.list-Results').empty()
       $('#error_message').empty()
       let radius = $('.radius').val();
       let specialty = $('#drop').val().toString();
