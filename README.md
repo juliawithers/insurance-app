@@ -1,6 +1,6 @@
 # **inSUREance**
 [Link to Live App](https://juliawithers.github.io/insurance-app/) \
-[Link to Repo](https://github.com/juliawithers/insurance-app) \
+[Link to Repo](https://github.com/juliawithers/insurance-app) 
 
 ## **What is inSUREance meant to do?**
 The primary purpose of this app is to help users find a doctor near their location and have all insurances listed immediately. The idea tends toward simplicity and is meant to have as little user input as possible. The data used is from BetterDoctor API and the geocoding api used is from the Mapquest Geocoding API.
