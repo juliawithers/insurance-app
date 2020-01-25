@@ -3,7 +3,7 @@
 Link to Repo\
 [Link to Repo](https://github.com/juliawithers/insurance-app)\
 Screenshot of Landing Page\
-![Landing Page for inSUREance app](LandingPage.PNG])\
+![Landing Page for inSUREance app](LandingPage.PNG)\
 Screenshot of Loaded Page\
 ![Results Loaded](ResultsLoaded.PNG)\
 Show More/Show Less Button\
