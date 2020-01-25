@@ -1,26 +1,22 @@
-
 let apiKey_BD = '4b7a78e632642f4b6da68fcd56a2c6ae';
 let srcDoctors = 'https://cors-anywhere.herokuapp.com/https://api.betterdoctor.com/2016-03-01/doctors?sort=distance-asc&skip=0&limit=15&';
 let srcMap ='https://www.mapquestapi.com/geocoding/v1/address?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&location=';
 
-// Possible inputs: 
-// User Location 
-// Radius of search
-// Specialty 
+// initialize the src with some params:
 function getHealthData(userLocation, radius, specialty){
-// scenario for just required input - practices endpoint
+// scenario for just required input
   if (specialty === ""){
     let source = srcDoctors+'user_key='+ apiKey_BD;
     useDoctors(source, userLocation,radius)
   }
-// scenario for required + specialty - doctor endpoint
+// scenario for required + specialty
   else if (specialty !== ""){
     let source = srcDoctors+'specialty_uid='+specialty+'&user_key='+ apiKey_BD;
     useDoctors(source,userLocation,radius)
   }
 }
 
-// **********Must prepare the addresses and source for the health data based of endpoint:**********
+// Must prepare the addresses and source for the health data based of endpoint:
 function useDoctors(source,userLocation,radius){
  // search Doctors
   let address = parseLocation(userLocation)
@@ -31,7 +27,7 @@ function useDoctors(source,userLocation,radius){
   .catch(err=>console.log(err))
 }
 
-// **********Fetch the health data:********** 
+// Fetch the health data:
 function fetchHealthDataDoctor(src){
    fetch(src)
    .then(response =>{
@@ -43,7 +39,7 @@ function fetchHealthDataDoctor(src){
    .catch(error=>console.log(error))
 }
 
-// **********Manipulate the Health Data Response**********
+// Manipulate the Health Data Response
 function manipulateDoctorData(responseJson){
   if (responseJson.data.length === 0){
     $('#error_message').toggleClass('hidden')
@@ -79,25 +75,20 @@ function manipulateDoctorData(responseJson){
   }
 } 
 
+// create the practice data:
 function generatePracticeData(doctor){
-    // create the practice data
     const practiceArr = []
     for(let i=0;i<doctor.practices.length;i++){ 
       const practice = doctor.practices[i];
-      if(doctor.practices[i].within_search_area === true){
-        // Practice Name
+      if(doctor.practices[i].within_search_area === true){  
         let practice_name = practice.name;
-        // Distance from userLocation
         let dist = practice.distance;
-        // let distNum = parseInt(dist,10);
         let dist_ance = dist.toFixed(2);
-        // Phone Number
         let ph = practice.phones[0].number 
         let area = ph.slice(0,3)
         let three_dig = ph.slice(3,6)
         let four_dig = ph.slice(6,10)
         let ph_num = [area,three_dig,four_dig].join('-')
-        // Location Address
         let ci_ty = practice.visit_address.city;
         let st_ate = practice.visit_address.state;
         let s_treet = practice.visit_address.street;
@@ -116,8 +107,7 @@ function generatePracticeData(doctor){
     return practiceArr;
 } 
 
-
-// create the insurances data
+// create the insurances data:
 function generateInsuranceData(doctor){
     let insuranceArr = [];
     for (let i=0;i<doctor.insurances.length;i++){ 
@@ -143,7 +133,7 @@ function generateInsuranceData(doctor){
   return insuranceArr;  
 }
 
-// create global variable to save all insurance data
+// create global variable to save all insurance data:
 const insuranceObject = [];
 function splitData(insuranceArray,short,doctorData){
   if(insuranceArray !== ""){
@@ -157,7 +147,7 @@ function splitData(insuranceArray,short,doctorData){
 }
 
 
-// **********Must render the health data based off search params:**********
+// Render the health data:
 let count = 1;
 function renderListItemDoctor(doctorData){
   if(doctorData.insuranceData !== ""){
@@ -189,7 +179,7 @@ function renderListItemDoctor(doctorData){
     }
 }
 
-// Need to figure out how to populate the short and long lists easily 
+// Show more or less insurances:
 function watchShow(){
   // Show More
   $('.list-Results').on('click', '.showMore', function(e){ 
