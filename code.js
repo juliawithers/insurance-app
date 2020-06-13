@@ -1,4 +1,4 @@
-let apiKey_BD = '4b7a78e632642f4b6da68fcd56a2c6ae';
+let apiKey_BD = '428e83b05c18cf98318b52b1fe54e9aa';
 let srcDoctors = 'https://cors-anywhere.herokuapp.com/https://api.betterdoctor.com/2016-03-01/doctors?sort=distance-asc&skip=0&limit=15&';
 let srcMap ='https://www.mapquestapi.com/geocoding/v1/address?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&location=';
 
@@ -35,7 +35,9 @@ function fetchHealthDataDoctor(src){
       return response.json()
     }
   })
-   .then(responseJson => manipulateDoctorData(responseJson))
+   .then(responseJson =>     
+    manipulateDoctorData(responseJson)
+    )
    .catch(error=>console.log(error))
 }
 
@@ -230,6 +232,7 @@ function manipulateGeo(responseJson){
   // long:
   let long = responseJson.results[0].locations[0].latLng.lng;
   latLong = lat+','+long;
+ 
   return latLong
 }
 
