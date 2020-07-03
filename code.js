@@ -1,6 +1,9 @@
-let apiKey_BD = '428e83b05c18cf98318b52b1fe54e9aa';
+let apiKey_BD = '58a901da6cdb8d351f0c7901ae3a1181';
 let srcDoctors = 'https://cors-anywhere.herokuapp.com/https://api.betterdoctor.com/2016-03-01/doctors?sort=distance-asc&skip=0&limit=15&';
 let srcMap ='https://www.mapquestapi.com/geocoding/v1/address?key=c77LD6NXniLCkBGt4rVOjzK7RsNokvAA&location=';
+
+// 2016-03-01
+
 
 // initialize the src with some params:
 function getHealthData(userLocation, radius, specialty){
